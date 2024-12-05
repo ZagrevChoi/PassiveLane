@@ -12,6 +12,7 @@ import {HeaderService} from '../../../services/UI/header.service';
 })
 export class OpportunitiesDetailsComponent implements OnInit {
 
+  // tslint:disable-next-line: no-input-rename
   @Input('data') Params: any = [];
   all_deals: any[] = [];
   private temps: any[] = [];
@@ -86,6 +87,7 @@ export class OpportunitiesDetailsComponent implements OnInit {
       }
     };
     if (this.router.url === '/opportunities') {
+      navigationExtras.queryParams['newurl'] = 1;
       this.router.navigate(['/opportunities-retail'], navigationExtras);
     } else {
       this.router.navigate(['main/invest/invest-mm-telecom-retail'], navigationExtras);

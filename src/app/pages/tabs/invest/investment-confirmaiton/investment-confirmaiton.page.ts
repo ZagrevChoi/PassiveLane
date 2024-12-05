@@ -103,7 +103,7 @@ export class InvestmentConfirmaitonPage implements OnInit {
                 this.submitparams = {...params};
                 this.totalSteps = parseInt(params.totalSteps, 10);
                 this.DealType = params.type;
-                const apiParams = { ... this.authService.userInfo, deal_id: this.submitparams.deal_id };
+                const apiParams = { ... this.authService.userInfo, deal_id: this.submitparams.deal_id, targetAmount: this.submitparams.targetAmount };
                 this.investService.getAgreeText(apiParams).subscribe(
                     (result) => {
                         if (result.RESPONSECODE === 1) {
@@ -219,7 +219,11 @@ export class InvestmentConfirmaitonPage implements OnInit {
         const backNavigationExtras: NavigationExtras = {
             queryParams: this.submitparams
         };
-        this.router.navigate(['main/invest/payment-options'], backNavigationExtras);
+        if (this.submitparams.newurl) {
+            this.router.navigate(['opportunities-payment-options'], backNavigationExtras);
+        } else {
+            this.router.navigate(['main/invest/payment-options'], backNavigationExtras);
+        }
     }
 
     gotoYourInvestment() {
@@ -233,7 +237,11 @@ export class InvestmentConfirmaitonPage implements OnInit {
                 const navigationExtras: NavigationExtras = {
                     queryParams: this.submitparams
                 };
-                this.router.navigate(['main/invest/your-investment'], navigationExtras);
+                if (this.submitparams.newurl) {
+                    this.router.navigate(['opportunities-your-investment'], navigationExtras);
+                } else {
+                    this.router.navigate(['main/invest/your-investment'], navigationExtras);
+                }
             }
         });
     }

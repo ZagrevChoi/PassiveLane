@@ -30,15 +30,14 @@ export class CashOutPage implements OnInit, OnDestroy {
   public totalAmount: string;
   public submitParams = {} as any;
   private unsubscribeAll: Subject<any> = new Subject<any>();
-
+  private numberTotalAmount: number;
   selected_deal_id = 0;
 
   isValid = false;
 
   // cash out detail handling
   dealInfo;
-  showCashOutSpinner = false;
-
+  showCashOutSpinner = true;
   validate_form: FormGroup;
   isSubmitReady = false;
   submitState = false;
@@ -78,7 +77,7 @@ export class CashOutPage implements OnInit, OnDestroy {
   }
 
   listenFormChange() {
-    if (this.validate_form.valid && this.validate_form.value.amount > 0) {
+    if (this.validate_form.valid && this.validate_form.value.amount > 0 && this.validate_form.value.amount <= this.numberTotalAmount) {
       this.isSubmitReady = true;
     } else {
       this.isSubmitReady = false;
@@ -143,10 +142,7 @@ export class CashOutPage implements OnInit, OnDestroy {
     this.myDeals.forEach(myDeal => {
       if (myDeal.deal_id === deal_id) {
         // this.isValid = myDeal.withdraw;
-        const dealInfo = this.authService.userInfo;
-        // tslint:disable-next-line: no-string-literal
-        dealInfo['deal_id'] = deal_id;
-        // alert(JSON.stringify(this.authService.userInfo));
+        let dealInfo = { ... this.authService.userInfo, deal_id: deal_id};
         this.dealsService.withdrawState(dealInfo).subscribe((res) => {
           if (res.RESPONSECODE === 1) {
             this.isValid = res.data.withdraw;
@@ -172,6 +168,7 @@ export class CashOutPage implements OnInit, OnDestroy {
       let dealsParams: any;
       dealsParams = {...this.params, type: 'all'}; // withdraw
       this.dealsService.getMMTelecomRetail(dealsParams).subscribe(response => {
+        this.showCashOutSpinner = false;
         if (response.RESPONSECODE === 1) {
           this.fnFillterDetailByDate(this.setColorInData(response.data.transaction)).then((result) => {
             const temp = {};
@@ -187,7 +184,6 @@ export class CashOutPage implements OnInit, OnDestroy {
       });
     } catch (e) {
       console.log('error occurred' + e);
-    } finally {
       this.showCashOutSpinner = false;
     }
   }
@@ -235,6 +231,7 @@ export class CashOutPage implements OnInit, OnDestroy {
       this.cashoutService.getCashoutInfo(this.params).subscribe(response => {
         if (response.RESPONSECODE === 1) {
           console.log(response.data);
+          this.numberTotalAmount = response.data.total_amount;
           this.totalAmount = this.numberWithCommas(response.data.total_amount);
           this.myBankAccounts = response.data.bank_details;
           if (this.myBankAccounts.length > 0) {
@@ -256,10 +253,10 @@ export class CashOutPage implements OnInit, OnDestroy {
         this.submitState = true;
         this.isSubmitReady = true;
         this.duringSumbmit = true;
-        this.submitParams = {...this.params, amount: this.validate_form.value.amount};
+        this.submitParams = {...this.params, amount: this.validate_form.value.amount, bank_account: this.validate_form.value.bank_name};
         const response = await this.cashoutService.fnWithdraw(this.submitParams).toPromise();
         if (response.RESPONSECODE === 1) {
-          console.log('withdraw succeed : ', response);
+          this.fnGetCashOutDetail();
         }
       } catch (e) {
         console.log('submit withdraw error : ', e);

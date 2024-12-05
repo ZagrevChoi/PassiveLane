@@ -5,8 +5,8 @@ import {myLeaveAnimation} from 'src/app/widgets/animations/leave.animation';
 import {MenuController, ModalController, NavController, Platform} from '@ionic/angular';
 import {ForgotPasswordComponent} from 'src/app/widgets/modals/forgot-password/forgot-password.modal';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
-import {AuthService} from 'src/app/services/auth/auth.service';
-import {Storage} from '@ionic/storage';
+import { AuthService } from 'src/app/services/auth/auth.service';
+import { Storage } from '@ionic/storage';
 
 // import { bcrypt } from 'bcrypt';
 
@@ -127,7 +127,9 @@ export class SignInPage implements OnInit {
 
   gotoHomePage(param) {
     if (param.mail_verify) {
-      if (param.is_verify) {
+
+      // if (param.is_verify) {
+
         if (param.is_onboarding) {
           if (param.deals_added) {
             this.router.navigate(['main/my-deal']);
@@ -137,9 +139,9 @@ export class SignInPage implements OnInit {
         } else {
           this.router.navigate(['investor-type']);
         }
-      } else {
-        this.router.navigate(['verify']);
-      }
+      // } else {
+      //   this.router.navigate(['verify']);
+      // }
     } else {
       this.router.navigate(['mail-verify']);
     }

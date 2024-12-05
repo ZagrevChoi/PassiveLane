@@ -30,12 +30,18 @@ import {GetMatiVerificationComponent} from './profile/get-mati-verification/get-
 import {ProofOfIdComponent} from './profile/proof-of-id/proof-of-id.component';
 import {WhiteLogoComponent} from './white-logo/white-logo.component';
 import {PopoverComponent} from './popover/popover.component';
+// skeletons
+import { RowsComponent } from './skeletons/rows/rows.component';
+import { CardsComponent } from './skeletons/cards/cards.component';
 
 @NgModule({
     declarations: [
         LogoComponent, WhiteLogoComponent, MenuComponent, StepperComponent, OpportunitiesDetailsComponent, TelecomRetailComponent, ActivityDetailsComponent, MyDealBarchartComponent, MyDealMmTelecomRetailComponent, CacheOutDetailsComponent,
+        // tslint:disable-next-line: max-line-length
         SignaturePad, BasicInfoFormComponent, AddressFormComponent, ContactNumberFormComponent, ChangePasswordFormComponent, BankDetailsFormComponent, GotoInvestorTypeFormComponent, SignatureFormComponent, GetMatiVerificationComponent, ProofOfIdComponent,
-        PopoverComponent
+        PopoverComponent,
+        CardsComponent,
+        RowsComponent
     ],
     imports: [
         IonicModule,
@@ -64,8 +70,11 @@ import {PopoverComponent} from './popover/popover.component';
     ],
     exports: [
         LogoComponent, WhiteLogoComponent, MenuComponent, StepperComponent, OpportunitiesDetailsComponent, TelecomRetailComponent, ActivityDetailsComponent, MyDealBarchartComponent, MyDealMmTelecomRetailComponent, CacheOutDetailsComponent,
+        // tslint:disable-next-line: max-line-length
         SignaturePad, BasicInfoFormComponent, AddressFormComponent, ContactNumberFormComponent, ChangePasswordFormComponent, BankDetailsFormComponent, GotoInvestorTypeFormComponent, SignatureFormComponent, GetMatiVerificationComponent, ProofOfIdComponent,
-        PopoverComponent
+        PopoverComponent,
+        CardsComponent,
+        RowsComponent
     ],
     schemas: [
         CUSTOM_ELEMENTS_SCHEMA
